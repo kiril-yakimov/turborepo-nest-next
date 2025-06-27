@@ -9,6 +9,10 @@
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
     "prettier": "^3.5.3",
     "turbo": "^2.5.4",
     "typescript": "5.8.2"
@@ -16,7 +20,22 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "yarn@1.22.22",
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "run-if-changed": {
+    "yarn.lock": "yarn install"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./apps/api/shared/modules/database/mikro-orm.config.ts"
+    ]
+  },
+  "packageManager": "yarn@4.9.2",
   "workspaces": [
     "apps/*",
     "packages/*"

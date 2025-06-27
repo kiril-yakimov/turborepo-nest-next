@@ -1,0 +1,105 @@
+x-node-service: &node-service
+  volumes:
+    - .:/app:cached
+  working_dir: /app
+  stdin_open: true
+  tty: true
+
+services:
+  nginx:
+    build:
+      context: ${APP_PATH:-.}/
+      dockerfile: .dev/nginx/Dockerfile
+    container_name: nginx
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ${APP_PATH:-.}/.dev/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ${APP_PATH:-.}/.dev/ssl:/etc/ssl
+    depends_on:
+      - keycloak
+      - nestjs
+
+  nestjs:
+    <<: *node-service
+    build:
+      context: ${APP_PATH:-.}/
+      dockerfile: ./.dev/node/development/Dockerfile
+    container_name: nestjs
+    env_file:
+      - ${API_PATH:-.}/.env
+    extra_hosts:
+      - ${KEYCLOAK_EXTRA_HOST}:host-gateway
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    build:
+      context: ${APP_PATH:-.}/
+      dockerfile: ${APP_PATH:-.}/.dev/database/Dockerfile
+      args:
+        KEYCLOAK_DB: ${POSTGRES_AUTH_DB}
+        KEYCLOAK_USER: ${POSTGRES_AUTH_USER}
+        KEYCLOAK_PASSWORD: ${POSTGRES_AUTH_PASSWORD}
+        API_DB: ${POSTGRES_API_DB}
+        API_USER: ${POSTGRES_API_USER}
+        API_PASSWORD: ${POSTGRES_API_PASSWORD}
+    container_name: postgres
+    image: postgres:latest
+    tty: true
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ${APP_PATH:-.}/.dev/.volumes/postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2
+    container_name: keycloak
+    command: start-dev --import-realm --verbose
+    environment:
+      KC_LOG_LEVEL: INFO
+      KC_FEATURES: token-exchange
+      KC_PROXY_HEADERS: xforwarded
+      KC_HOSTNAME_URL: ${KEYCLOAK_HOSTNAME}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      # database setup
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/${POSTGRES_AUTH_DB}
+      KC_DB_USERNAME: ${POSTGRES_AUTH_USER}
+      KC_DB_PASSWORD: ${POSTGRES_AUTH_PASSWORD}
+    ports:
+      - "8080:8080"
+    volumes:
+      - ${APP_PATH:-.}/.dev/.volumes/keycloak-data:/opt/keycloak/data:cached
+      - ${KEYCLOAK_THEMES_PATH:-.}:/opt/keycloak/themes:cached
+      - ${KEYCLOAK_PLUGINS_PATH:-.}:/opt/keycloak/providers
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  redis:
+    image: redis:alpine
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data: {}

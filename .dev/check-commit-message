@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+# Check if a commit message argument is provided
+if [ -z "$1" ]; then
+    echo "Please provide a commit message."
+    exit 1
+fi
+
+echo "Checking commit message..."
+
+# Use commitlint to check the commit message
+echo "$1" | yarn commitlint
+
+if [ $? -eq 0 ]; then
+    echo "Commit message is valid."
+else
+    echo "Commit message is invalid."
+    exit 1
+fi
