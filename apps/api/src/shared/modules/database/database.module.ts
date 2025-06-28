@@ -14,9 +14,6 @@ import { DatabaseConfigInterface } from './types';
             useFactory: (config: ConfigService): any => {
                 const dbConfig: DatabaseConfigInterface =
                     config.get<DatabaseConfigInterface>(DATABASE_CONFIG_KEY);
-                console.log('Database Config:', dbConfig);
-                console.log('mikroConfig:', mikroConfig);
-                console.log(' process.env:', process.env);
 
                 return {
                     ...mikroConfig, // Spread the base config

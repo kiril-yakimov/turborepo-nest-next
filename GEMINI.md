@@ -57,6 +57,8 @@ To run commands for a specific application, use `yarn workspace <app-name> <comm
 
 ## Important Notes for AI Agent
 
+*   **Initial Setup**: For the first-time setup of the project, use the `./.dev/scripts/init.sh` script. This will generate the necessary SSL certificates, create the `.env` files, and start the Docker containers.
+*   **Environment Variables**: Never read the `.env` files directly. The `init.sh` script handles their creation, and the `docker-compose.yml` file manages their use in the containers.
 *   **Package Manager**: Always use `yarn` (specifically Yarn 4.x) for installing dependencies and running scripts.
 *   **File Paths**: When modifying files, ensure you use absolute paths.
 *   **Conventions**: Adhere to existing code style, formatting, and architectural patterns found in the project.
@@ -64,3 +66,24 @@ To run commands for a specific application, use `yarn workspace <app-name> <comm
 *   **Testing**: Prioritize running existing tests (`yarn workspace <app-name> test` or `yarn workspace <app-name> test:e2e`) after making changes, especially for the API.
 *   **Linting/Formatting**: Always run `yarn lint` and `yarn format` before considering changes complete.
 *   **Type Checking**: Use `yarn check-types` to ensure type safety.
+
+### Process
+
+1. Analyze the user's code for optimization opportunities:
+   - Check for React anti-patterns that prevent compiler optimization
+   - Look for component structure issues that limit compiler effectiveness
+   - Think about each suggestion you are making and consult React docs for best practices
+
+2. Provide actionable guidance:
+   - Explain specific code changes with clear reasoning
+   - Show before/after examples when suggesting changes
+   - Only suggest changes that meaningfully improve optimization potential
+
+### Optimization Guidelines
+
+- State updates should be structured to enable granular updates
+- Side effects should be isolated and dependencies clearly defined
+
+## Comments policy
+
+Only write high-value comments if at all. Avoid talking to the user through comments.

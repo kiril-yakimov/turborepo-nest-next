@@ -1,84 +1,98 @@
-# Turborepo starter
+# Turborepo Nest.js & Next.js Monorepo Starter
 
-This Turborepo starter is maintained by the Turborepo core team.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Turborepo](https://img.shields.io/badge/Turborepo-E6552A?style=for-the-badge&logo=turborepo&logoColor=white)](https://turbo.build/repo)
+[![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)](https://nestjs.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 
-## Using this example
+A comprehensive starter kit for building modern web applications using a powerful monorepo setup. This project integrates a Nest.js backend, a Next.js frontend, and a documentation site, all managed by Turborepo for efficient development and scaling.
 
-Run the following command:
+## ✨ Features
 
-```sh
-npx create-turbo@latest
+- **Monorepo:** Managed with [Turborepo](https://turbo.build/repo) for optimized build and development workflows.
+- **Backend:** A robust API built with [Nest.js](https://nestjs.com/), including:
+  - **ORM:** [Mikro-ORM](https://mikro-orm.io/) for seamless database interactions with PostgreSQL.
+  - **Authentication:** [Keycloak](https://www.keycloak.org/) integration for secure access control.
+  - **Task Queues:** [BullMQ](https://bullmq.io/) for handling background jobs.
+  - **Logging:** [Winston](https://github.com/winstonjs/winston) for structured logging.
+- **Frontend:** A fast and modern user interface built with [Next.js](https://nextjs.org/).
+- **Documentation:** A separate [Next.js](https://nextjs.org/) site for project documentation.
+- **Shared UI:** A `ui` package for reusable React components across applications.
+- **Configuration:** Centralized `eslint` and `typescript` configurations for consistency.
+- **Containerization:** A complete Docker setup using `docker-compose` for a consistent development environment.
+
+## 🛠️ Tech Stack
+
+| Technology | Description |
+| :--- | :--- |
+| **Turborepo** | High-performance build system for JavaScript and TypeScript monorepos. |
+| **Nest.js** | A progressive Node.js framework for building efficient, reliable server-side applications. |
+| **Next.js** | The React framework for production. |
+| **PostgreSQL** | A powerful, open-source object-relational database system. |
+| **Keycloak** | Open-source Identity and Access Management. |
+| **BullMQ** | A robust and fast job queue system for Node.js. |
+| **Docker** | A platform for developing, shipping, and running applications in containers. |
+| **Yarn** | Fast, reliable, and secure dependency management. |
+| **TypeScript** | A typed superset of JavaScript that compiles to plain JavaScript. |
+| **ESLint** | Pluggable and configurable linter tool for identifying and reporting on patterns in JavaScript. |
+| **Prettier** | An opinionated code formatter. |
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/en/) (v18 or later)
+- [Yarn](https://yarnpkg.com/) (v4.x)
+- [Docker](https://www.docker.com/get-started) and [Docker Compose](https://docs.docker.com/compose/install/)
+
+### Installation
+
+1.  **Clone the repository:**
+    ```sh
+    git clone https://github.com/your-username/turbotepo-nest-next.git
+    cd turbotepo-nest-next
+    ```
+
+2.  **Run the Initial Setup Script:**
+    This script will generate SSL certificates, create `.env` files, install all dependencies, and start the Docker containers with the development servers.
+    ```sh
+    ./.dev/scripts/init.sh
+    ```
+
+Once the script is finished, the development environment will be up and running.
+
+## 📜 Available Scripts
+
+- `yarn dev`: Starts all applications in development mode.
+- `yarn build`: Builds all applications for production.
+- `yarn lint`: Lints the entire monorepo.
+- `yarn format`: Formats the code using Prettier.
+- `yarn check-types`: Runs TypeScript type checks.
+
+For application-specific commands, use `yarn workspace <app-name> <command>`. For example:
+- `yarn workspace api test`: Runs unit tests for the API.
+- `yarn workspace api mikro-orm migration:create`: Creates a new database migration.
+
+## 📂 Project Structure
+
+```
+.
+├── apps
+│   ├── api/         # Nest.js API
+│   ├── web/         # Next.js web application
+│   └── docs/        # Next.js documentation site
+├── packages
+│   ├── ui/          # Shared React components
+│   ├── eslint-config/ # Shared ESLint configurations
+│   └── typescript-config/ # Shared TypeScript configurations
+└── ...
 ```
 
-## What's inside?
+## 🤝 Contributing
 
-This Turborepo includes the following packages/apps:
+Contributions are welcome! Please feel free to submit a pull request.
 
-### Apps and Packages
+## 📄 License
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
