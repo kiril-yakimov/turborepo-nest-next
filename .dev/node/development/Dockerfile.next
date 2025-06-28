@@ -1,0 +1,9 @@
+FROM node:lts-alpine
+
+ENV NODE_ENV=${ENVIRONMENT}
+
+RUN echo "Targeted enviroment $ENVIRONMENT"
+
+WORKDIR /app
+
+CMD ["sh", "-c", "yarn dev --filter=web"]

@@ -21,12 +21,14 @@ services:
     depends_on:
       - keycloak
       - nestjs
+      - web
+      - docs
 
   nestjs:
     <<: *node-service
     build:
       context: ${APP_PATH:-.}/
-      dockerfile: ./.dev/node/development/Dockerfile
+      dockerfile: ./.dev/node/development/Dockerfile.api
     container_name: nestjs
     env_file:
       - ${API_PATH:-.}/.env
@@ -38,6 +40,28 @@ services:
     depends_on:
       - postgres
       - redis
+
+  web:
+    <<: *node-service
+    build:
+      context: ${APP_PATH:-.}/
+      dockerfile: ./.dev/node/development/Dockerfile.next
+    container_name: web
+    ports:
+      - "3001:3001"
+    depends_on:
+      - nestjs
+
+  docs:
+    <<: *node-service
+    build:
+      context: ${APP_PATH:-.}/
+      dockerfile: ./.dev/node/development/Dockerfile.docs
+    container_name: docs
+    ports:
+      - "3002:3002"
+    depends_on:
+      - nestjs
 
   postgres:
     build:
