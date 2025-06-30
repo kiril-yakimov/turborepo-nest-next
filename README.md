@@ -24,19 +24,19 @@ A comprehensive starter kit for building modern web applications using a powerfu
 
 ## 🛠️ Tech Stack
 
-| Technology | Description |
-| :--- | :--- |
-| **Turborepo** | High-performance build system for JavaScript and TypeScript monorepos. |
-| **Nest.js** | A progressive Node.js framework for building efficient, reliable server-side applications. |
-| **Next.js** | The React framework for production. |
-| **PostgreSQL** | A powerful, open-source object-relational database system. |
-| **Keycloak** | Open-source Identity and Access Management. |
-| **BullMQ** | A robust and fast job queue system for Node.js. |
-| **Docker** | A platform for developing, shipping, and running applications in containers. |
-| **Yarn** | Fast, reliable, and secure dependency management. |
-| **TypeScript** | A typed superset of JavaScript that compiles to plain JavaScript. |
-| **ESLint** | Pluggable and configurable linter tool for identifying and reporting on patterns in JavaScript. |
-| **Prettier** | An opinionated code formatter. |
+| Technology     | Description                                                                                     |
+| :------------- | :---------------------------------------------------------------------------------------------- |
+| **Turborepo**  | High-performance build system for JavaScript and TypeScript monorepos.                          |
+| **Nest.js**    | A progressive Node.js framework for building efficient, reliable server-side applications.      |
+| **Next.js**    | The React framework for production.                                                             |
+| **PostgreSQL** | A powerful, open-source object-relational database system.                                      |
+| **Keycloak**   | Open-source Identity and Access Management.                                                     |
+| **BullMQ**     | A robust and fast job queue system for Node.js.                                                 |
+| **Docker**     | A platform for developing, shipping, and running applications in containers.                    |
+| **Yarn**       | Fast, reliable, and secure dependency management.                                               |
+| **TypeScript** | A typed superset of JavaScript that compiles to plain JavaScript.                               |
+| **ESLint**     | Pluggable and configurable linter tool for identifying and reporting on patterns in JavaScript. |
+| **Prettier**   | An opinionated code formatter.                                                                  |
 
 ## 🚀 Getting Started
 
@@ -49,6 +49,7 @@ A comprehensive starter kit for building modern web applications using a powerfu
 ### Installation
 
 1.  **Clone the repository:**
+
     ```sh
     git clone https://github.com/your-username/turbotepo-nest-next.git
     cd turbotepo-nest-next
@@ -71,6 +72,7 @@ Once the script is finished, the development environment will be up and running.
 - `yarn check-types`: Runs TypeScript type checks.
 
 For application-specific commands, use `yarn workspace <app-name> <command>`. For example:
+
 - `yarn workspace api test`: Runs unit tests for the API.
 - `yarn workspace api mikro-orm migration:create`: Creates a new database migration.
 

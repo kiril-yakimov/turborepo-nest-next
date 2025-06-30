@@ -1,6 +1,8 @@
 x-node-service: &node-service
   volumes:
     - .:/app:cached
+  extra_hosts:
+    - ${KEYCLOAK_EXTRA_HOST}:host-gateway
   working_dir: /app
   stdin_open: true
   tty: true
@@ -32,8 +34,6 @@ services:
     container_name: nestjs
     env_file:
       - ${API_PATH:-.}/.env
-    extra_hosts:
-      - ${KEYCLOAK_EXTRA_HOST}:host-gateway
     ports:
       - "3000:3000"
       - "9229:9229"
