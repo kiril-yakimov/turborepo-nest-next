@@ -28,7 +28,7 @@ export class UserCreateHandler implements ICommandHandler<UserCreateCommand> {
         const user = new User();
 
         // Create Keycloak user
-        user.keycloakId = await this.createKeycloakUser(userDto, user.id);
+        user.externalAuthId = await this.createKeycloakUser(userDto, user.id);
 
         await this.em.persistAndFlush(user);
 
@@ -50,6 +50,6 @@ export class UserCreateHandler implements ICommandHandler<UserCreateCommand> {
 
         await this.keycloakService.createUser(userData);
 
-        return await this.keycloakService.getUserIdByUsername(userData.username);
+        return await this.keycloakService.getUserIdByEmail(userData.email);
     }
 }

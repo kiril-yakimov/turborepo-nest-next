@@ -15,7 +15,7 @@ export class User extends Timestamp {
     id: string = uuidv4();
 
     @Property({ index: true })
-    keycloakId: string;
+    externalAuthId: string;
 
     @Enum({
         items: () => UserStatus,
@@ -24,7 +24,4 @@ export class User extends Timestamp {
         index: true,
     })
     status: UserStatus = UserStatus.ACTIVE;
-
-    @Property()
-    test: string;
 }

@@ -10,6 +10,9 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { useContainer, ValidationError } from 'class-validator';
 import { AppHttpExceptionFilter } from './app-http-exception.filter';
 import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
+import { RedisConfig } from './config';
+import { RedisIoAdapter } from './shared/modules/websockets';
 
 async function bootstrap(): Promise<void> {
     const app = await NestFactory.create(AppModule);
@@ -73,12 +76,11 @@ async function bootstrap(): Promise<void> {
 
     useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-    // createSwaggerConfig(app);
-    //
-    // const config = app.get(ConfigService);
-    // app.useWebSocketAdapter(
-    //   createRedisAdaptorInstance(app, config.get<RedisConfigInterface>('redis'))
-    // );
+    const config = app.get(ConfigService);
+    const redisIoAdapter = new RedisIoAdapter(app);
+    await redisIoAdapter.connectToRedis(config.get<RedisConfig>('redis').redisDsn);
+
+    app.useWebSocketAdapter(redisIoAdapter);
 
     app.enableShutdownHooks([ShutdownSignal.SIGINT, ShutdownSignal.SIGTERM]);
 

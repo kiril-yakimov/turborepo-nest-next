@@ -62,7 +62,6 @@ To run commands for a specific application, use `yarn workspace <app-name> <comm
 ## Important Notes for AI Agent
 
 - **Initial Setup**: For the first-time setup of the project, use the `./.dev/scripts/init.sh` script. This will generate the necessary SSL certificates, create the `.env` files, and start the Docker containers.
-- **Environment Variables**: Never read the `.env` files directly. The `init.sh` script handles their creation, and the `docker-compose.yml` file manages their use in the containers.
 - **Package Manager**: Always use `yarn` (specifically Yarn 4.x) for installing dependencies and running scripts.
 - **File Paths**: When modifying files, ensure you use absolute paths.
 - **Conventions**: Adhere to existing code style, formatting, and architectural patterns found in the project.

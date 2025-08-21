@@ -75,7 +75,6 @@ services:
         API_USER: ${POSTGRES_API_USER}
         API_PASSWORD: ${POSTGRES_API_PASSWORD}
     container_name: postgres
-    image: postgres:latest
     tty: true
     ports:
       - 5432:5432
