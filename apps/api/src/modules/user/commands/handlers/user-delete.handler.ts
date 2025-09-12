@@ -17,7 +17,7 @@ export class UserDeleteHandler implements ICommandHandler<UserDeleteCommand> {
 
         const user = await this.userRepository.findOneOrFail({ id });
 
-        this.keycloakService.deleteUser(user.keycloakId);
+        this.keycloakService.deleteUser(user.externalAuthId);
 
         await this.em.removeAndFlush(user);
     }

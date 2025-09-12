@@ -55,13 +55,61 @@ A comprehensive starter kit for building modern web applications using a powerfu
     cd turbotepo-nest-next
     ```
 
-2.  **Run the Initial Setup Script:**
+2.  **Hosts Entries:** Add local domains for reverse proxy and TLS.
+    - `127.0.0.1 auth.application.int web.application.int docs.application.int api.application.int`
+
+3.  **Run the Initial Setup Script:**
     This script will generate SSL certificates, create `.env` files, install all dependencies, and start the Docker containers with the development servers.
     ```sh
-    ./.dev/scripts/init.sh
+    yarn setup
     ```
 
 Once the script is finished, the development environment will be up and running.
+
+### Environment Variables
+
+Backend (NestJS API): `apps/api/.env` (created from example). Required Keycloak values:
+
+- `KEYCLOAK_URL=https://auth.application.int`
+- `KEYCLOAK_REALM=application_realm`
+- `KEYCLOAK_CLIENT_ID=api-client`
+- `KEYCLOAK_CLIENT_SECRET=replace_with_api_client_secret`
+- `KEYCLOAK_REALM_PUBLIC_KEY=realm_public_key_here`
+
+Frontend (Next.js Web): create `apps/web/.env.local` or copy from `apps/web/.env.example`:
+
+- `KEYCLOAK_ID=web-client`
+- `KEYCLOAK_SECRET=replace_with_keycloak_web_client_secret`
+- `KEYCLOAK_ISSUER=https://auth.application.int/realms/application_realm`
+
+### Keycloak Setup
+
+1. Create realm: `application_realm`.
+2. Create confidential client for API (`api-client`):
+   - Enable Direct Access Grants and Service Accounts.
+   - Copy client secret to API `.env` (`KEYCLOAK_CLIENT_SECRET`).
+   - Service account roles: at minimum `realm-management: manage-users, view-users`.
+3. Create confidential client for Web (`web-client`):
+   - Valid Redirect URIs: `https://web.application.int/api/auth/callback/keycloak`
+   - Web Origins: `https://web.application.int`
+   - Copy client secret to Web `.env.local`.
+4. Copy Realm public key (RS256) to API `.env` as `KEYCLOAK_REALM_PUBLIC_KEY`.
+
+### Local Domains
+
+Nginx proxies:
+- API: `https://api.application.int` → NestJS (`nestjs:3000`)
+- Auth: `https://auth.application.int` → Keycloak (`keycloak:8080`)
+- Web: `https://web.application.int` → Next.js (`web:3001`)
+- Docs: `https://docs.application.int` → Next.js (`docs:3002`)
+
+### Database Migration
+
+Apply Mikro-ORM migrations to ensure the `users` table uses `external_auth_id`:
+
+```sh
+yarn workspace api mikro-orm migration:up
+```
 
 ## 📜 Available Scripts
 
@@ -90,6 +138,14 @@ For application-specific commands, use `yarn workspace <app-name> <command>`. Fo
 │   └── typescript-config/ # Shared TypeScript configurations
 └── ...
 ```
+
+## 🔐 Auth Endpoints (Public)
+
+- POST `https://api.application.int/v1/auth/register` — Creates user in Keycloak + local DB, returns tokens.
+- POST `https://api.application.int/v1/auth/login` — Direct Grant exchange, returns tokens.
+- POST `https://api.application.int/v1/auth/refresh-token` — Refreshes tokens.
+
+Local user persistence uses `externalAuthId` (Keycloak user id). A migration is included to align DB column names accordingly.
 
 ## 🤝 Contributing
 

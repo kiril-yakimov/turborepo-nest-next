@@ -14,7 +14,7 @@ export class User extends Timestamp {
     @PrimaryKey()
     id: string = uuidv4();
 
-    @Property({ index: true })
+    @Property({ index: true, name: 'external_auth_id' })
     externalAuthId: string;
 
     @Enum({

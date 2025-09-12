@@ -19,8 +19,18 @@ echo "✅ SSL certificates generated successfully."
 
 # --- Environment File Setup ---
 echo "📄 Creating .env files from examples..."
-cp .env.example .env
-cp apps/api/.env.example apps/api/.env
+if [ ! -f .env ]; then
+  echo "'.env' file not found. Copying '.env.example' to '.env'."
+  cp .env.example .env
+else
+  echo "'.env' file already exists, skipping copy."
+fi
+if [ ! -f apps/api/.env ]; then
+  echo "'apps/api/.env' file not found. Copying 'apps/api/.env.example' to 'apps/api/.env'."
+  cp apps/api/.env.example apps/api/.env
+else
+  echo "'apps/api/.env' file already exists, skipping copy."
+fi
 echo "✅ .env files created successfully."
 
 # --- NGINX Config ---
