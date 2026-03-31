@@ -101,7 +101,7 @@ services:
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       # database setup
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres/${POSTGRES_AUTH_DB}
+      KC_DB_URL: jdbc:postgresql://${POSTGRES_AUTH_HOST}/${POSTGRES_AUTH_DB}
       KC_DB_USERNAME: ${POSTGRES_AUTH_USER}
       KC_DB_PASSWORD: ${POSTGRES_AUTH_PASSWORD}
     ports:
